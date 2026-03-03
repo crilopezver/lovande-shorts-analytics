@@ -54,3 +54,10 @@ print(top_subs.to_string(index=False))
 
 print("\nTOP 20 por COMENTARIOS")
 print(top_comments.to_string(index=False))
+# 9) Guardar resultados para el repo (NO incluye data cruda)
+top_subs.to_csv("reports/top20_subscribers.csv", index=False)
+top_comments.to_csv("reports/top20_comments.csv", index=False)
+
+with open("reports/summary.txt", "w", encoding="utf-8") as f:
+    f.write(f"Rango analizado: {start_date.date()} -> {end_date.date()}\n")
+    f.write(f"Shorts en el rango: {len(df)}\n")
