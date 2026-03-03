@@ -27,32 +27,37 @@ def hook_family(title: str) -> str:
     return "Otros"
 
 
-def save_hook_plot(df: pd.DataFrame, title: str, out_name: str) -> None:
-    counts = df["Video title"].apply(hook_family).value_counts()
+def save_hook_impact_plot(df: pd.DataFrame, metric: str, title: str, out_name: str) -> None:
+    tmp = df.copy()
+    tmp["hook_family"] = tmp["Video title"].apply(hook_family)
+
+    impact = tmp.groupby("hook_family")[metric].sum().sort_values(ascending=False)
 
     plt.figure()
-    counts.plot(kind="bar")
+    impact.plot(kind="bar")
     plt.title(title)
-    plt.xlabel("Familia")
-    plt.ylabel("Cantidad de Shorts")
+    plt.xlabel("Hook (familia)")
+    plt.ylabel(metric)
     plt.xticks(rotation=30, ha="right")
     plt.tight_layout()
     plt.savefig(FIG_DIR / out_name, dpi=200)
     plt.close()
 
 
-# 1) Hooks en Top 20 por suscriptores
-save_hook_plot(
+# 1) Hooks vs SUSCRIPTORES (suma), usando top20_subscribers
+save_hook_impact_plot(
     top_subs,
-    "Top 20 por suscriptores: familias de hook (por título)",
-    "top_subs_hook_families.png",
+    metric="Subscribers gained",
+    title="Top 20 por suscriptores: impacto por familia de hook (suma de suscriptores)",
+    out_name="top_subs_hook_impact_subscribers.png",
 )
 
-# 2) Hooks en Top 20 por comentarios
-save_hook_plot(
+# 2) Hooks vs COMENTARIOS (suma), usando top20_comments
+save_hook_impact_plot(
     top_comments,
-    "Top 20 por comentarios: familias de hook (por título)",
-    "top_comments_hook_families.png",
+    metric="Comments added",
+    title="Top 20 por comentarios: impacto por familia de hook (suma de comentarios)",
+    out_name="top_comments_hook_impact_comments.png",
 )
 
 print("OK: Figuras generadas en", FIG_DIR)
