@@ -39,6 +39,19 @@ cols_show = [
     "Comments added",
 ]
 
+# Score combinado usando TOTALES (sin dividir por views)
+max_subs = df["Subscribers gained"].max()
+max_comments = df["Comments added"].max()
+
+df["subs_norm"] = df["Subscribers gained"] / max_subs if max_subs > 0 else 0
+df["comments_norm"] = df["Comments added"] / max_comments if max_comments > 0 else 0
+
+df["total_score"] = df["subs_norm"] + df["comments_norm"]
+
+top_total_score = df.sort_values(
+    ["total_score", "Subscribers gained", "Comments added", "Views"], ascending=False
+)[cols_show + ["total_score"]].head(20)
+
 # 7.1) Tasas por 1000 views (evitar división por cero)
 df["subs_per_1000_views"] = df.apply(
     lambda r: (r["Subscribers gained"] / r["Views"] * 1000) if r["Views"] > 0 else 0,
@@ -71,6 +84,9 @@ top_comments_rate = df.sort_values(
 print("Rango analizado:", start_date.date(), "->", end_date.date())
 print("Shorts en el rango:", len(df))
 
+print("\nTOP 20 por SCORE TOTAL (subs + comments normalizados)")
+print(top_total_score.to_string(index=False))
+
 print("\nTOP 20 por SUSCRIPTORES ganados")
 print(top_subs.to_string(index=False))
 
@@ -84,6 +100,7 @@ print("\nTOP 20 por COMENTARIOS por 1000 views")
 print(top_comments_rate.to_string(index=False))
 
 # 10) Guardar resultados para el repo (NO incluye data cruda)
+top_total_score.to_csv("reports/top20_total_score.csv", index=False)
 top_subs.to_csv("reports/top20_subscribers.csv", index=False)
 top_comments.to_csv("reports/top20_comments.csv", index=False)
 top_subs_rate.to_csv("reports/top20_subscribers_rate.csv", index=False)
