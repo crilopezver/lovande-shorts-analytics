@@ -10,17 +10,11 @@ Identificar qué Shorts generan más **suscriptores** (prioridad) y, secundariam
 
 ### Gráficas (resumen visual)
 
-**Duración en Top 20 por suscriptores**
-![Duración Top Subs](figures/top_subs_duration.png)
-
 **Familias de hook (por título) en Top 20 por suscriptores**
 ![Hook Families Top Subs](figures/top_subs_hook_families.png)
 
-**Comentarios dentro del Top 20 por suscriptores**
-![Comments in Top Subs](figures/top_subs_comments_distribution.png)
-
-**Distribución de comentarios en Top 20 por comentarios**
-![Comments Top Comments](figures/top_comments_distribution.png)
+**Familias de hook (por título) en Top 20 por comentarios**
+![Hook Families Top Comments](figures/top_comments_hook_families.png)
 
 ### Patrones observados (con evidencia)
 

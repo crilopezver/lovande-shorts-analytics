@@ -27,54 +27,32 @@ def hook_family(title: str) -> str:
     return "Otros"
 
 
-# --- FIG 1: Duración (Top 20 por subs) ---
-dur_counts = top_subs["Duration"].value_counts().sort_index()
+def save_hook_plot(df: pd.DataFrame, title: str, out_name: str) -> None:
+    counts = df["Video title"].apply(hook_family).value_counts()
 
-plt.figure()
-dur_counts.plot(kind="bar")
-plt.title("Top 20 por suscriptores: distribución de duración (seg)")
-plt.xlabel("Duración (seg)")
-plt.ylabel("Cantidad de Shorts")
-plt.tight_layout()
-plt.savefig(FIG_DIR / "top_subs_duration.png", dpi=200)
-plt.close()
+    plt.figure()
+    counts.plot(kind="bar")
+    plt.title(title)
+    plt.xlabel("Familia")
+    plt.ylabel("Cantidad de Shorts")
+    plt.xticks(rotation=30, ha="right")
+    plt.tight_layout()
+    plt.savefig(FIG_DIR / out_name, dpi=200)
+    plt.close()
 
-# --- FIG 2: Familias de hook por título (Top 20 por subs) ---
-top_subs["hook_family"] = top_subs["Video title"].apply(hook_family)
-hook_counts = top_subs["hook_family"].value_counts()
 
-plt.figure()
-hook_counts.plot(kind="bar")
-plt.title("Top 20 por suscriptores: familias de hook (por título)")
-plt.xlabel("Familia")
-plt.ylabel("Cantidad de Shorts")
-plt.xticks(rotation=30, ha="right")
-plt.tight_layout()
-plt.savefig(FIG_DIR / "top_subs_hook_families.png", dpi=200)
-plt.close()
+# 1) Hooks en Top 20 por suscriptores
+save_hook_plot(
+    top_subs,
+    "Top 20 por suscriptores: familias de hook (por título)",
+    "top_subs_hook_families.png",
+)
 
-# --- FIG 3: Comentarios en el Top 20 por subs ---
-comments_counts = top_subs["Comments added"].value_counts().sort_index()
-
-plt.figure()
-comments_counts.plot(kind="bar")
-plt.title("Top 20 por suscriptores: distribución de comentarios")
-plt.xlabel("Comentarios")
-plt.ylabel("Cantidad de Shorts")
-plt.tight_layout()
-plt.savefig(FIG_DIR / "top_subs_comments_distribution.png", dpi=200)
-plt.close()
-
-# --- FIG 4 (opcional útil): ¿cuántos con 1 comentario en top_comments? ---
-comments_counts_2 = top_comments["Comments added"].value_counts().sort_index()
-
-plt.figure()
-comments_counts_2.plot(kind="bar")
-plt.title("Top 20 por comentarios: distribución de comentarios")
-plt.xlabel("Comentarios")
-plt.ylabel("Cantidad de Shorts")
-plt.tight_layout()
-plt.savefig(FIG_DIR / "top_comments_distribution.png", dpi=200)
-plt.close()
+# 2) Hooks en Top 20 por comentarios
+save_hook_plot(
+    top_comments,
+    "Top 20 por comentarios: familias de hook (por título)",
+    "top_comments_hook_families.png",
+)
 
 print("OK: Figuras generadas en", FIG_DIR)
