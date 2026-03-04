@@ -2,6 +2,8 @@
 
 Análisis de YouTube Shorts de Lovandé (últimos 180 días, desde exportes de YouTube Studio). Objetivo: identificar qué tipos de Shorts generan más suscriptores y comentarios, con limpieza de datos y ranking por performance.
 
+➡️ Ver insights: [reports/insights.md](reports/insights.md)
+
 ## Qué hay en este repo
 
 Este proyecto analiza Shorts de Lovandé en una ventana móvil de ~180 días (recortada desde un export de 365 días de YouTube Studio). El objetivo es identificar qué Shorts generan más **suscriptores** y **comentarios**.
@@ -15,3 +17,8 @@ Este proyecto analiza Shorts de Lovandé en una ventana móvil de ~180 días (re
   Fórmula: `total_score = (subs / max_subs) + (comments / max_comments)`.
 
 El script que genera estos outputs está en `notebooks/01_shorts_180d.py`. El CSV crudo no se sube al repo.
+
+## Cómo ejecutar
+1) Coloca tu export como `data/raw/yt_table_365d.csv` (no se sube al repo).
+2) Instala dependencias: `pip install -r requirements.txt`
+3) Genera outputs: `python notebooks/01_shorts_180d.py`
